@@ -37,8 +37,9 @@ print(f)                                문자열 1개 출력하는 예제
 #sys.stdin = open("input.txt", "r")
 
 T = int(input())
+answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    A, B = list(map(int, input().split()))
-    answer=(A+B)%24
-    print(f'#{test_case} {answer}')
+    A, B = map(int, input().split())
+    answer.append(f'#{test_case} {(A+B)%24}')
+print('\n'.join(answer))
