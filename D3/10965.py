@@ -44,8 +44,12 @@ answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
     A = int(input())
-    for i in range(int(math.sqrt(A)), 1, -1):
-        if i<A and A%(i**2)==0:
+    i = int(math.sqrt(A))
+    while i > 1:
+        if A%(i**2)==0:
             A = A//(i**2)
+            i = int(math.sqrt(A))
+        else:
+            i -= 1
     answer.append(f'#{test_case} {A}')
 print('\n'.join(answer))
