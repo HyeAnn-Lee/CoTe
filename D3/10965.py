@@ -49,7 +49,7 @@ for test_case in range(1, T + 1):
 
     # 9 이상의 제곱수로 나누어지는지 차례로 체크
     i = 3
-    while i**2 < A:
+    while i**2 <= A:
         if A%(i**2)==0:
             A = A//(i**2)
         else:
