@@ -44,7 +44,7 @@ for test_case in range(1, T + 1):
     A = int(input())
 
     # 4로 나누어지는가?
-    if A%4==0:
+    while A%4==0:
         A = A//4
 
     # 9 이상의 제곱수로 나누어지는지 차례로 체크
