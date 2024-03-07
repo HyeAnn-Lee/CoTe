@@ -45,7 +45,7 @@ answer = []
 for test_case in range(1, T + 1):
     A = int(input())
     for i in range(int(math.sqrt(A)), 1, -1):
-        if A%(i**2)==0:
+        if i<A and A%(i**2)==0:
             A = A//(i**2)
     answer.append(f'#{test_case} {A}')
 print('\n'.join(answer))
