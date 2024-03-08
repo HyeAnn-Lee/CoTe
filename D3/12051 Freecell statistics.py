@@ -41,21 +41,21 @@ answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
     N, Pd, Pg = map(int, input().split())
-    result = "Possible"
 
     if (Pd!=0 and Pg==0) or ((Pd==100)!=(Pg==100)):
         answer.append(f"#{test_case} Broken")
         continue
 
-    D = []
+    D = False
     for d in range(1, N+1):
         win_today = d*Pd/100
         if win_today.is_integer():
-            D.append((d, win_today, d-win_today))
+            D = True
+            break
     
-    if len(D)==0:
+    if not D:
         answer.append(f"#{test_case} Broken")
         continue
 
-    answer.append(f"#{test_case} {result}")
+    answer.append(f"#{test_case} Possible")
 print('\n'.join(answer))
