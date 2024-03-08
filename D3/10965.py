@@ -39,21 +39,29 @@ print(f)                                문자열 1개 출력하는 예제
 T = int(input())
 answer = []
 
+from math import sqrt
+
+MAX = 10**7
+RTMAX = int(sqrt(MAX))
+
+eratos = [True]*RTMAX
+primes = []
+for i in range(2, RTMAX):
+    if eratos[i] == True:
+        primes.append(i)
+        for j in range(i*2, RTMAX, i):
+            eratos[j] = False
+
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
     A = int(input())
-
-    # 4로 나누어지는가?
-    while A%4==0:
-        A = A//4
-
-    # 9 이상의 제곱수로 나누어지는지 차례로 체크
-    i = 3
-    while i**2 <= A:
-        if A%(i**2)==0:
-            A = A//(i**2)
+    ind = 0
+    while primes[ind]**2 <= A:
+        if A % primes[ind]**2 == 0:
+            A = A // primes[ind]**2
         else:
-            i += 2  # 홀수의 거듭제곱만 확인
-        
+            ind += 1
+            if ind >= len(primes):
+                break
     answer.append(f'#{test_case} {A}')
 print('\n'.join(answer))
