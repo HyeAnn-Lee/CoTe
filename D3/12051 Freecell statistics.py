@@ -43,5 +43,9 @@ for test_case in range(1, T + 1):
     N, Pd, Pg = map(int, input().split())
     result = "Possible"
 
+    if (Pd!=0 and Pg==0) or ((Pd==100)!=(Pg==100)):
+        answer.append(f"#{test_case} Broken")
+        continue
+
     answer.append(f"#{test_case} {result}")
 print('\n'.join(answer))
