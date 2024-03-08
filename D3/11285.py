@@ -45,10 +45,12 @@ answer = []
 for test_case in range(1, T + 1):
     N = int(input())
     score = 0
-    for arrow in range(N):
+    for _ in range(N):
         x, y = map(int, input().split())
         dist = sqrt(x**2 + y**2)
-        if dist <= 200:
+        if dist == 0:
+            score += 10
+        elif dist <= 200:
             score += 11 - ceil(dist/20)
     
     answer.append(f"#{test_case} {score}")
