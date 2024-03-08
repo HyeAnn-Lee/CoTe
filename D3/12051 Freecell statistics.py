@@ -47,5 +47,15 @@ for test_case in range(1, T + 1):
         answer.append(f"#{test_case} Broken")
         continue
 
+    D = []
+    for d in range(1, N+1):
+        win_today = d*Pd/100
+        if win_today.is_integer():
+            D.append((d, win_today, d-win_today))
+    
+    if len(D)==0:
+        answer.append(f"#{test_case} Broken")
+        continue
+
     answer.append(f"#{test_case} {result}")
 print('\n'.join(answer))
