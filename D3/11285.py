@@ -35,14 +35,21 @@ print(f)                                문자열 1개 출력하는 예제
 '''
 #import sys
 #sys.stdin = open("input.txt", "r")
+#T = int(input()[1])     # The first line of the sample input file is '\ufeff1'
+
+from math import ceil, sqrt
 
 T = int(input())
+answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    # ///////////////////////////////////////////////////////////////////////////////////
-    '''
-
-        이 부분에 여러분의 알고리즘 구현이 들어갑니다.
-
-    '''
-    # ///////////////////////////////////////////////////////////////////////////////////
+    N = int(input())
+    score = 0
+    for arrow in range(N):
+        x, y = map(int, input().split())
+        dist = sqrt(x**2 + y**2)
+        if dist <= 200:
+            score += 11 - ceil(dist/20)
+    
+    answer.append(f"#{test_case} {score}")
+print('\n'.join(answer))
