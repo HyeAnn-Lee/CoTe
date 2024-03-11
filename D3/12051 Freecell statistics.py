@@ -42,7 +42,7 @@ answer = []
 for test_case in range(1, T + 1):
     N, Pd, Pg = map(int, input().split())
 
-    if (Pd!=0 and Pg==0) or ((Pd==100)!=(Pg==100)):
+    if (Pd!=0 and Pg==0) or (Pd!=100 and Pg==100):
         answer.append(f"#{test_case} Broken")
         continue
 
