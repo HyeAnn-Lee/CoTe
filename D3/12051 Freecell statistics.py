@@ -46,16 +46,12 @@ for test_case in range(1, T + 1):
         answer.append(f"#{test_case} Broken")
         continue
 
-    D = False
     for d in range(1, N+1):
-        win_today = d*Pd/100
-        if win_today.is_integer():
-            D = True
+        if (d*Pd)%100 == 0:
+            answer.append(f"#{test_case} Possible")
             break
     
-    if not D:
+    else:
         answer.append(f"#{test_case} Broken")
-        continue
 
-    answer.append(f"#{test_case} Possible")
 print('\n'.join(answer))
