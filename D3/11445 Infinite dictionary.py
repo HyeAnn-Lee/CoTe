@@ -40,7 +40,12 @@ T = int(input())
 answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    P, Q = input(), input()
+    P, Q = input().split()[0], input().split()[0]
 
-    answer.append(f"#{test_case} Y")
+    if P+'a'==Q:  # man vs mana
+        result = 'N'
+    else:
+        result = 'Y'
+    
+    answer.append(f"#{test_case} {result}")
 print('\n'.join(answer))
