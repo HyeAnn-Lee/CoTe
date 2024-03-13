@@ -37,12 +37,22 @@ print(f)                                문자열 1개 출력하는 예제
 #sys.stdin = open("input.txt", "r")
 
 T = int(input())
+answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    # ///////////////////////////////////////////////////////////////////////////////////
-    '''
+    P, Q = input(), input()
 
-        이 부분에 여러분의 알고리즘 구현이 들어갑니다.
+    if P+'a'==Q:  # man vs mana
+        result = 'N'
+    
+    elif P[:-1]==Q[:-1] and ord(P[-1])+1==ord(Q[-1]):  # mana vs manb
+        result = 'N'
+    
+    elif P[1:]=="zzzzzzzzz" and len(Q)==1 and ord(P[0])+1==ord(Q): # azzzzzzzzz vs b
+        result = 'N'
 
-    '''
-    # ///////////////////////////////////////////////////////////////////////////////////
+    else:
+        result = 'Y'
+
+    answer.append(f"#{test_case} {result}")
+print('\n'.join(answer))
