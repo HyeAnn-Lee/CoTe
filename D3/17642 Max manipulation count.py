@@ -43,9 +43,7 @@ for test_case in range(1, T + 1):
     A0, B0 = map(int, input().split())
     diff = B0 - A0
     
-    if diff == 0:
-        count = 3   # 2+3=5, 2+5=7, 2+11=13, ...
-    elif diff <= 1:
+    if diff < 0 or diff == 1:
         count = -1
     else:
         count = diff//2
