@@ -37,12 +37,20 @@ print(f)                                문자열 1개 출력하는 예제
 #sys.stdin = open("input.txt", "r")
 
 T = int(input())
+answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    # ///////////////////////////////////////////////////////////////////////////////////
-    '''
+    A,B = map(int, input().split())
+    x, y = -1, -1
+    
+    # Ax-1 should be a muliple of B
 
-        이 부분에 여러분의 알고리즘 구현이 들어갑니다.
+    for x in range(0, 10000):
+        temp = (A*x-1)
+        if temp%B == 0:
+            y = -temp//B
+            break
 
-    '''
-    # ///////////////////////////////////////////////////////////////////////////////////
+    answer.append(f"#{test_case} {x} {y}")
+    
+print('\n'.join(answer))
