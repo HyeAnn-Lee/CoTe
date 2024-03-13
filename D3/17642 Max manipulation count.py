@@ -37,12 +37,18 @@ print(f)                                문자열 1개 출력하는 예제
 #sys.stdin = open("input.txt", "r")
 
 T = int(input())
+answer = []
 # 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 for test_case in range(1, T + 1):
-    # ///////////////////////////////////////////////////////////////////////////////////
-    '''
+    A0, B0 = map(int, input().split())
+    diff = B0 - A0
+    
+    if diff <= 1:
+        count = -1
+    elif diff%2 == 0:
+        count = diff//2
+    else:
+        count = (diff-1)//2
 
-        이 부분에 여러분의 알고리즘 구현이 들어갑니다.
-
-    '''
-    # ///////////////////////////////////////////////////////////////////////////////////
+    answer.append(f"#{test_case} {count}")
+print('\n'.join(answer))
