@@ -44,12 +44,6 @@ for test_case in range(1, T + 1):
 
     if P+'a'==Q:  # man vs mana
         result = 'N'
-    
-    elif P[:-1]==Q[:-1] and ord(P[-1])+1==ord(Q[-1]):  # mana vs manb
-        result = 'N'
-    
-    elif P[1:]=='z'*(len(P)-1) and len(Q)==1 and ord(P[0])+1==ord(Q): # az...z vs b
-        result = 'N'
 
     else:
         result = 'Y'
