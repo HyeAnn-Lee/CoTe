@@ -6,6 +6,6 @@ class Solution:
         ans = 0
         for num in nums:
             num_str = str(num) 
-            encrypt = int(max(num_str))*len(num_str)
+            encrypt = int(max(num_str)*len(num_str))
             ans += encrypt
         return ans
