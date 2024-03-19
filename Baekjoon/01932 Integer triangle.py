@@ -4,9 +4,7 @@
 
 n = int(input())
 
-triangle = []
-for _ in range(n):
-    triangle.append(list(map(int, input().split())))
+triangle = [list(map(int, input().split())) for _ in range(n)]
 
 for i in range(n-1, 0, -1):
     subsum = [None] * i
