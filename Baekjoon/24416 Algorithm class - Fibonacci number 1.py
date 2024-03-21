@@ -18,6 +18,6 @@ def fibo_dp(n):
         fibo_list[i] = fibo_list[i-1] + fibo_list[i-2]
     return fibo_list[n], count_dp
 
-count_recur = fibo_recur(n)
+# count_recur = fibo_recur(n)
 _, count_dp = fibo_dp(n)
-print(count_recur, count_dp)
+print(_, count_dp)
