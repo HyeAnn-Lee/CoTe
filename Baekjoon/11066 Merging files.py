@@ -9,11 +9,11 @@ for _ in range(T):
 
     cost = [[0]*K for _ in range(K)]
 
-    for i in range(1, K):
+    for i in range(K-1):
+        cost[i][i+1] = files[i] + files[i+1]
+
+    for i in range(2, K):
         for j in range(K-i):
-            min_cost = float("inf")
-            for k in range(j, i+j):
-                min_cost = min(min_cost, cost[j][k] + cost[k+1][i+j])
-            cost[j][i+j] = min_cost + sum(files[j:i+j+1])
+            cost[j][i+j] = min([cost[j][k] + cost[k+1][i+j] for k in range(j, i+j)]) + sum(files[j:i+j+1])
 
     print(cost[0][-1])
