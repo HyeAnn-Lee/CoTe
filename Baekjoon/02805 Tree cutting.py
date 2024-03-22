@@ -25,7 +25,9 @@ while True:
     for tree in trees:
         get += max(0, tree-H)
     
-    if get >= M:     # too many trees. increase H.
+    if get == M:    # found!
+        break
+    elif get > M:     # too many trees. increase H.
         min_M = H
     else:           # need more trees. decrease H.
         max_M = H
@@ -33,4 +35,4 @@ while True:
     if max_M - min_M <= 1:
         break
 
-print(min_M)
+print(H)
