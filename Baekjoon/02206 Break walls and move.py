@@ -23,6 +23,18 @@ input:
 
 output: 3
 
+-------- 
+
+TC3
+
+input:
+2 2
+00
+00
+
+output: 3
+
+
 """
 
 from collections import deque
@@ -88,4 +100,4 @@ for i in range(N):
 if dist1[-1]==float("inf") and dist_break==N*M+1:
     print(-1)
 else:
-    print(min(dist1[-1], dist_break)+3)
+    print(min(dist1[-1]+1, dist_break+3))
