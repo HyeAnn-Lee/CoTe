@@ -37,7 +37,8 @@ while True:
     else:           # need more trees. decrease H.
         max_M = H
 
-    if max_M-min_M == 1 and get>M:
+    if max_M-min_M == 1:
+        H -= H-min_M
         break
     if max_M == min_M:
         break
