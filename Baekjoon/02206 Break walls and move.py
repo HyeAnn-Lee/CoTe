@@ -12,6 +12,17 @@ input:
 
 output: 9
 
+-------- 
+
+TC2
+
+input:
+2 2
+01
+10
+
+output: 3
+
 """
 
 from collections import deque
@@ -69,6 +80,10 @@ for i in range(N):
             dist_break = min([dist_break, dist1[ind-M]+dist2[ind+M], dist1[ind+M]+dist2[ind-M]])
         if j!=0 and j!=(M-1) and map[ind-1]==0 and map[ind+1]==0:
             dist_break = min([dist_break, dist1[ind-1]+dist2[ind+1], dist1[ind+1]+dist2[ind-1]])
+        if i==0 and j==(M-1):   # upper right corner
+            dist_break = min([dist_break, dist1[ind-1]+dist2[ind+M], dist1[ind+M]+dist2[ind-1]])
+        if i==(N-1) and j==0:   # lower left corner
+            dist_break = min([dist_break, dist1[ind-M]+dist2[ind+1], dist1[ind+1]+dist2[ind-M]])
 
 if dist1[-1]==float("inf") and dist_break==N*M+1:
     print(-1)
