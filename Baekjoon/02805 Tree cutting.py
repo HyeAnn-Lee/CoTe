@@ -5,7 +5,7 @@
 N, M = list(map(int, input().split()))
 trees = list(map(int, input().split()))
 
-max_M = 2000000000
+max_M = max(trees)
 min_M = 1
 
 while (max_M - min_M != 1):
