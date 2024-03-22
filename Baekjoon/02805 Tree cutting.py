@@ -39,5 +39,7 @@ while True:
 
     if max_M-min_M == 1 and get>M:
         break
+    if max_M == min_M:
+        break
 
 print(H)
