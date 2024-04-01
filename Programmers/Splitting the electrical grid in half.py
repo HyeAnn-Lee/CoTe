@@ -11,6 +11,8 @@ def solution(n, wires):
         subroot1, _ = wires[i]
         wires_test = wires[:i] + wires[i+1:]
         
+        """Conventional BFS approach""" 
+
         E = [[] for _ in range(n+1)]
         for v1, v2 in wires_test:
             E[v1].append(v2)
@@ -28,6 +30,19 @@ def solution(n, wires):
                     Q.append(neigh)
                     subsize1 += 1
             
+        ############
+
+        """Brand-new set approach"""
+
+        # s = set([subroot1])
+        # for _ in range(n-1):
+        #     for e in wires_test:
+        #         if set(e) & s:
+        #             s.update(e)
+        # subsize1 = len(s)
+
+        ############
+    
         diff = abs(subsize1 - (n-subsize1))
         answer = min(diff, answer)
 
