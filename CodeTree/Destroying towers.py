@@ -18,14 +18,16 @@ def dijkstra(E, starting_vertex):
 
     prev = [None] * (N*M)
 
-    PQ = [(0, starting_vertex)]
+    p = 0
+    PQ = [(0, p, starting_vertex)]  # (dist, priority, node)
     while PQ:
-        d, u = heapq.heappop(PQ)
+        d, _, u = heapq.heappop(PQ)
+        p += 1
         for v in E[u]:
             if dist[v] > d+1:
                 dist[v] = d+1
                 prev[v] = u
-                heapq.heappush(PQ, (d+1, v))
+                heapq.heappush(PQ, (d+1, p, v))
         
     return dist, prev
 
@@ -203,7 +205,8 @@ for k in range(1, K+1):
             if grid[i][j] != 0 and (i,j) not in battled:
                 grid[i][j] += 1
 
-    # print(grid)
+# print(attack_history)
+# print(grid)
 
 max_attack = 0
 for row in grid:
