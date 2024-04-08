@@ -22,8 +22,8 @@ def dijkstra(E, starting_vertex):
     PQ = [(0, p, starting_vertex)]  # (dist, priority, node)
     while PQ:
         d, _, u = heapq.heappop(PQ)
-        p += 1
         for v in E[u]:
+            p += 1
             if dist[v] > d+1:
                 dist[v] = d+1
                 prev[v] = u
