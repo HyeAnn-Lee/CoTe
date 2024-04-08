@@ -1,6 +1,7 @@
 코딩테스트를 위한 연습장 CoTe입니다.
 
 - Baekjoon: https://www.acmicpc.net/
+- CodeTree: https://www.codetree.ai/training-field/
 - LeetCode: https://leetcode.com/
 - Programmers: https://programmers.co.kr/
 - SWEA : https://swexpertacademy.com/
@@ -12,6 +13,9 @@ CoTe
 |-- choose_faster.ipynb
 |
 |-- Baekjoon
+|   `-- *.py
+|
+|-- CodeTree
 |   `-- *.py
 |
 |-- LeetCode
