@@ -81,7 +81,7 @@ for k in range(1, K+1):
             cand2 = []
             for i in range(len(cand1)):
                 if sumrc[i] == max_sum:
-                    cand2.append(cand2[i])
+                    cand2.append(cand1[i])
             
             if len(cand2) == 1:
                 ATTACKER = set_attacker(*cand2[0], k)
@@ -186,7 +186,7 @@ for k in range(1, K+1):
         for i in [-1,0,1]:
             for j in [-1,0,1]:
                 r = (ATTACKEE[0]+i)%N
-                c = (ATTACKEE[0]+j)%M
+                c = (ATTACKEE[1]+j)%M
                 if (r,c) == ATTACKER or (r,c) == ATTACKEE:
                     continue
                 grid[r][c] -= attack//2
@@ -203,7 +203,7 @@ for k in range(1, K+1):
             if grid[i][j] != 0 and (i,j) not in battled:
                 grid[i][j] += 1
 
-# print(grid)
+    # print(grid)
 
 max_attack = 0
 for row in grid:
