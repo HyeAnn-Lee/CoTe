@@ -2,7 +2,7 @@ import heapq
 
 
 def set_attacker(r, c, k):
-    attack_history[r][c] = k
+    attack_history[coor_to_ind(r,c)] = k
     grid[r][c] += N+M
     return (r, c)
 
@@ -33,7 +33,7 @@ def dijkstra(E, starting_vertex):
 N, M, K = map(int, input().split())
 
 grid = [list(map(int, input().split())) for _ in range(N)]
-attack_history = [[0 for _ in range(M)] for _ in range(N)]
+attack_history = [0 for _ in range(N*M)]
 
 for k in range(1, K+1):
     num_dead = sum([row.count(0) for row in grid])
@@ -61,8 +61,8 @@ for k in range(1, K+1):
     ### 2) 2개 이상이라면, 가장 최근에 공격한 포탑
     else:
         history = []
-        for coord in cand:
-            history.append(attack_history[coord[0]][coord[1]])
+        for c in cand:
+            history.append(attack_history[coor_to_ind(*c)])
         max_history = max(history)
         cand1 = []
         for i in range(len(cand)):
@@ -119,7 +119,7 @@ for k in range(1, K+1):
     else:
         history = []
         for c in cand:
-            history.append(attack_history[c[0]][c[1]])
+            history.append(attack_history[coor_to_ind(*c)])
         min_history = min(history)
         for i in range(len(history)-1, -1, -1):
             if history[i] != min_history:
@@ -187,7 +187,7 @@ for k in range(1, K+1):
             for j in [-1,0,1]:
                 r = (ATTACKEE[0]+i)%N
                 c = (ATTACKEE[0]+j)%M
-                if (r,c) == ATTACKER:
+                if (r,c) == ATTACKER or (r,c) == ATTACKEE:
                     continue
                 grid[r][c] -= attack//2
                 battled.append((r,c))
