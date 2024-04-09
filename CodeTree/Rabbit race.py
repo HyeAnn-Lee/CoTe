@@ -1,27 +1,15 @@
+import heapq
+
+
 def who_is_prior():
     '''
     우선순위가 높은 토끼
     '''
 
-    i = pids[0]
-    for pid in pids[1:]:
-        if rabbit[pid][2] < rabbit[i][2]:   # 현재까지의 총 점프 횟수가 적은 토끼
-            i = pid
-        elif rabbit[pid][2] == rabbit[i][2]:
-            if sum(rabbit[pid][1]) < sum(rabbit[i][1]):     # 현재 서있는 행 번호 + 열 번호가 작은 토끼
-                i = pid
-            elif sum(rabbit[pid][1]) == sum(rabbit[i][1]):
-                if rabbit[pid][1][0] < rabbit[i][1][0]:     # 행 번호가 작은 토끼
-                    i = pid
-                elif rabbit[pid][1][0] == rabbit[i][1][0]:
-                    if rabbit[pid][1][1] < rabbit[i][1][1]:     # 열 번호가 작은 토끼
-                        i = pid
-                    elif rabbit[pid][1][1] == rabbit[i][1][1]:
-                        i = min(i, pid)         # 고유번호가 작은 토끼
-    
-    return i
+    item = heapq.heappop(rabbit_PQ)
+    return item
 
-def move_to_where():
+def move_to_where(r, c, i):
 
     def move_right(c, d):
         return min(c+d, 2*M - (c+d))
@@ -38,7 +26,7 @@ def move_to_where():
     '''
     가장 우선순위가 높은 칸
     '''
-    d_i, (r, c), *_ = rabbit[i]
+    d_i = dists[i]
     move = []
 
     ## LR
@@ -98,20 +86,21 @@ def who_is_prior_to_get_S(history):
     '''
     S점을 받을 토끼
     '''
-    i = history[0]
-    for pid in history[1:]:
-        if sum(rabbit[pid][1]) > sum(rabbit[i][1]):     # 현재 서있는 행 번호 + 열 번호가 큰 토끼
-            i = pid
-        elif sum(rabbit[pid][1]) == sum(rabbit[i][1]):
-            if rabbit[pid][1][0] > rabbit[i][1][0]:     # 행 번호가 큰 토끼
-                i = pid
-            elif rabbit[pid][1][0] == rabbit[i][1][0]:
-                if rabbit[pid][1][1] > rabbit[i][1][1]:     # 열 번호가 큰 토끼
-                    i = pid
-                elif rabbit[pid][1][1] == rabbit[i][1][1]:
-                    i = max(i, pid)         # 고유번호가 큰 토끼
-
-    return i
+    
+    x, (y, z, w) = 0, (0, 0, 0)
+    for pid, (r_c, r, c) in history.items():
+        if r_c > y:     # 현재 서있는 행 번호 + 열 번호가 큰 토끼
+            x, (y, z, w) = pid, (r_c, r, c)
+        elif r_c == y:
+            if r > z:   # 행 번호가 큰 토끼
+                x, (y, z, w) = pid, (r_c, r, c)
+            elif r == z:
+                if c > w:   # 열 번호가 큰 토끼
+                    x, (y, z, w) = pid, (r_c, r, c)
+                elif c == w:
+                    if pid > x:     # 고유번호가 큰 토끼
+                        x, (y, z, w) = pid, (r_c, r, c)
+    return x
 
 Q = int(input())
 
@@ -120,44 +109,45 @@ assert command[0] == 100
 ### 경주 시작 준비
 _, N, M, P, *info = command
 pids, ds = info[::2], info[1::2]
-rabbit = {pids[p] : [ds[p], (1,1), 0, 0] for p in range(P)}     # pid: [d, (r,c), count, score]
-# print(rabbit)
+
+dists = dict(zip(pids, ds))
+scores = {pids[p]: 0 for p in range(P)}
+rabbit_PQ = [(0, 2, (1,1), pids[p]) for p in range(P)]      # (count, r+c, (r, c), pid)
+heapq.heapify(rabbit_PQ)
+# print(rabbit_PQ)
 
 for _ in range(Q-2):
     command = list(map(int, input().split()))
     if command[0] == 200:
         ### 경주 진행
         _, K, S = command
-        history = []
+        history = dict()
         for _ in range(K):
             ## 우선순위가 높은 토끼
-            i = who_is_prior()
-            history.append(i)
+            item = who_is_prior()
+            count, _, (r, c), i = item
+            history[i] = (r+c, r, c)
 
             ## 토끼 이동
-            dest = move_to_where()
+            dest = move_to_where(r, c, i)
             for pid in pids:
                 if pid==i:
                     # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
-                    rabbit[pid][1] = dest
-                    rabbit[pid][2] += 1
+                    heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
                 else:
                     #  나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
-                    rabbit[pid][3] += sum(dest)
+                    scores[pid] += sum(dest)
             
         ## 점수 더하기
-        i = who_is_prior_to_get_S(list(set(history)))
-        rabbit[i][3] += S
+        i = who_is_prior_to_get_S(history)
+        scores[i] += S
 
     else:
         ### 이동거리 변경
         _, pid_t, L = command
-        rabbit[pid_t][0] *= L
+        dists[pid_t] *= L
 
 command = int(input())
 assert command == 400
 ### 최고의 토끼 선정
-score = 0
-for pid in pids:
-    score = max(score, rabbit[pid][3])
-print(score)
+print(max(scores.values()))
