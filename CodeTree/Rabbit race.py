@@ -6,14 +6,11 @@ def move_to_where(r, c, i):
     def move_right(c, d):
         return min(c+d, 2*M - (c+d))
     
-    def move_left(c, d):
-        return max(c-d, 2 - (c-d))
-    
     def move_down(r, d):
         return min(r+d, 2*N - (r+d))
     
-    def move_up(r, d):
-        return max(r-d, 2 - (r-d))
+    def move_to_origin(cur, d):
+        return max(cur-d, 2 - (cur-d))
 
     '''
     가장 우선순위가 높은 칸
@@ -25,39 +22,43 @@ def move_to_where(r, c, i):
     d = d_i % (2*M-2)
 
     # R
-    if d==0 or d==2*(M-c):
+    noop = 2*(M-c)
+    if d==0 or d==noop:
         move.append((r,c))
-    elif d < 2*(M-c):
+    elif d < noop:
         move.append((r, move_right(c, d)))
     else:
-        move.append((r, move_left(c, d)))
+        move.append((r, move_to_origin(c, d-noop)))
     
     # L
-    if d==0 or d==(2*c-1):
+    noop = 2*(c-1)
+    if d==0 or d==noop:
         move.append((r,c))
-    elif d < 2*c-1:
-        move.append((r, move_left(c, d)))
+    elif d < noop:
+        move.append((r, move_to_origin(c, d)))
     else:
-        move.append((r, move_right(c, d)))
+        move.append((r, move_right(c, d-noop)))
 
     ## UD
     d = d_i % (2*N-2)
 
     # D
-    if d==0 or d==2*(N-r):
+    noop = 2*(N-r)
+    if d==0 or d==noop:
         move.append((r,c))
-    elif d < 2*(N-r):
+    elif d < noop:
         move.append((move_down(r, d), c))
     else:
-        move.append((move_up(r, d), c))
+        move.append((move_to_origin(r, d-noop), c))
     
     # U
-    if d==0 or d==(2*r-1):
+    noop = 2*(r-1)
+    if d==0 or d==noop:
         move.append((r,c))
-    elif d < 2*r-1:
-        move.append((move_up(r, d), c))
+    elif d < noop:
+        move.append((move_to_origin(r, d), c))
     else:
-        move.append((move_down(r, d), c))
+        move.append((move_down(r, d-noop), c))
 
     # print(move)
 
@@ -104,6 +105,7 @@ for _ in range(Q-2):
             accum_score += sum(dest)
             scores[pid_to_idx[i]] -= sum(dest)
             
+            # S점을 추가로 받을 토끼를 tracking
             if (sum(dest), *dest, i) > rabbit_get_S:
                 rabbit_get_S = (sum(dest), *dest, i)
 
