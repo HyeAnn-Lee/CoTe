@@ -82,26 +82,6 @@ def move_to_where(r, c, i):
     
     return dest
 
-def who_is_prior_to_get_S(history):
-    '''
-    S점을 받을 토끼
-    '''
-    
-    x, (y, z, w) = 0, (0, 0, 0)
-    for pid, (r_c, r, c) in history.items():
-        if r_c > y:     # 현재 서있는 행 번호 + 열 번호가 큰 토끼
-            x, (y, z, w) = pid, (r_c, r, c)
-        elif r_c == y:
-            if r > z:   # 행 번호가 큰 토끼
-                x, (y, z, w) = pid, (r_c, r, c)
-            elif r == z:
-                if c > w:   # 열 번호가 큰 토끼
-                    x, (y, z, w) = pid, (r_c, r, c)
-                elif c == w:
-                    if pid > x:     # 고유번호가 큰 토끼
-                        x, (y, z, w) = pid, (r_c, r, c)
-    return x
-
 Q = int(input())
 
 command = list(map(int, input().split()))
@@ -121,7 +101,7 @@ for _ in range(Q-2):
     if command[0] == 200:
         ### 경주 진행
         _, K, S = command
-        history = dict()
+        rabbit_get_S = (0,0,0,0)    # (r+c, r, c, pid)
         for _ in range(K):
             ## 우선순위가 높은 토끼
             item = who_is_prior()
@@ -133,14 +113,15 @@ for _ in range(Q-2):
                 if pid==i:
                     # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
                     heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
-                    history[pid] = (sum(dest), *dest)
                 else:
                     #  나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
                     scores[pid] += sum(dest)
             
+            if (sum(dest), *dest, i) > rabbit_get_S:
+                rabbit_get_S = (sum(dest), *dest, i)
+
         ## 점수 더하기
-        i = who_is_prior_to_get_S(history)
-        scores[i] += S
+        scores[rabbit_get_S[3]] += S
 
     else:
         ### 이동거리 변경
