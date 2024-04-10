@@ -126,7 +126,6 @@ for _ in range(Q-2):
             ## 우선순위가 높은 토끼
             item = who_is_prior()
             count, _, (r, c), i = item
-            history[i] = (r+c, r, c)
 
             ## 토끼 이동
             dest = move_to_where(r, c, i)
@@ -134,6 +133,7 @@ for _ in range(Q-2):
                 if pid==i:
                     # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
                     heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
+                    history[pid] = (sum(dest), *dest)
                 else:
                     #  나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
                     scores[pid] += sum(dest)
