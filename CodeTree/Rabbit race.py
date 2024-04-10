@@ -26,7 +26,7 @@ def move_to_where(r, c, i):
     '''
     가장 우선순위가 높은 칸
     '''
-    d_i = dists[i]
+    d_i = ds[pid_to_idx[i]]
     move = []
 
     ## LR
@@ -89,9 +89,9 @@ assert command[0] == 100
 ### 경주 시작 준비
 _, N, M, P, *info = command
 pids, ds = info[::2], info[1::2]
+pid_to_idx = dict(zip(pids, [*range(P)]))     # idx_to_pid is not necessary. use pids[idx].
 
-dists = dict(zip(pids, ds))
-scores = {pids[p]: 0 for p in range(P)}
+scores = [0 for _ in range(P)]
 rabbit_PQ = [(0, 2, (1,1), pids[p]) for p in range(P)]      # (count, r+c, (r, c), pid)
 heapq.heapify(rabbit_PQ)
 # print(rabbit_PQ)
@@ -109,26 +109,26 @@ for _ in range(Q-2):
 
             ## 토끼 이동
             dest = move_to_where(r, c, i)
-            for pid in pids:
-                if pid==i:
-                    # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
-                    heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
-                else:
-                    #  나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
-                    scores[pid] += sum(dest)
+            
+            # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
+            heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
+            # 나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
+            for idx in range(P):
+                scores[idx] += sum(dest)
+            scores[pid_to_idx[i]] -= sum(dest)
             
             if (sum(dest), *dest, i) > rabbit_get_S:
                 rabbit_get_S = (sum(dest), *dest, i)
 
         ## 점수 더하기
-        scores[rabbit_get_S[3]] += S
+        scores[pid_to_idx[rabbit_get_S[3]]] += S
 
     else:
         ### 이동거리 변경
         _, pid_t, L = command
-        dists[pid_t] *= L
+        ds[pid_to_idx[pid_t]] *= L
 
 command = int(input())
 assert command == 400
 ### 최고의 토끼 선정
-print(max(scores.values()))
+print(max(scores))
