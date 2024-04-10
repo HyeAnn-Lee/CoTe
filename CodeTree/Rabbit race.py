@@ -1,14 +1,6 @@
 import heapq
 
 
-def who_is_prior():
-    '''
-    우선순위가 높은 토끼
-    '''
-
-    item = heapq.heappop(rabbit_PQ)
-    return item
-
 def move_to_where(r, c, i):
 
     def move_right(c, d):
@@ -74,11 +66,7 @@ def move_to_where(r, c, i):
         if sum(dest) < sum(mo):     # 행 번호 + 열 번호가 큰 칸
             dest = mo
         elif sum(dest) == sum(mo):
-            if dest[0] < mo[0]:     # 행 번호가 큰 칸
-                dest = mo
-            elif dest[0] == mo[0]:
-                if dest[1] < mo[1]:     # 열 번호가 큰 칸
-                    dest = mo
+            dest = max(dest, mo)    # 행 번호가 큰 칸, 열 번호가 큰 칸
     
     return dest
 
@@ -92,6 +80,7 @@ pids, ds = info[::2], info[1::2]
 pid_to_idx = dict(zip(pids, [*range(P)]))     # idx_to_pid is not necessary. use pids[idx].
 
 scores = [0 for _ in range(P)]
+accum_score = 0
 rabbit_PQ = [(0, 2, (1,1), pids[p]) for p in range(P)]      # (count, r+c, (r, c), pid)
 heapq.heapify(rabbit_PQ)
 # print(rabbit_PQ)
@@ -104,8 +93,7 @@ for _ in range(Q-2):
         rabbit_get_S = (0,0,0,0)    # (r+c, r, c, pid)
         for _ in range(K):
             ## 우선순위가 높은 토끼
-            item = who_is_prior()
-            count, _, (r, c), i = item
+            count, _, (r, c), i = heapq.heappop(rabbit_PQ)
 
             ## 토끼 이동
             dest = move_to_where(r, c, i)
@@ -113,8 +101,7 @@ for _ in range(Q-2):
             # 가장 우선순위가 높은 칸을 골라 그 위치로 해당 토끼를 이동시킵니다
             heapq.heappush(rabbit_PQ, (count+1, sum(dest), dest, i))
             # 나머지 P−1마리의 토끼들은 전부 r+c 만큼의 점수를 동시에 얻게 됩니다.
-            for idx in range(P):
-                scores[idx] += sum(dest)
+            accum_score += sum(dest)
             scores[pid_to_idx[i]] -= sum(dest)
             
             if (sum(dest), *dest, i) > rabbit_get_S:
@@ -131,4 +118,4 @@ for _ in range(Q-2):
 command = int(input())
 assert command == 400
 ### 최고의 토끼 선정
-print(max(scores))
+print(max(scores) + accum_score)
