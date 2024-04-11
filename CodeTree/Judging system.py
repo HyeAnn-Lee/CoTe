@@ -23,7 +23,7 @@ def add_to_wait(p, t, u):
 waiting_PQ = []     # (p, t, url)
 heapq.heapify(waiting_PQ)
 
-waiting_hash = defaultdict(lambda: [[[] for _ in range(1000)] for _ in range(1000)])    # domain : [level1][level2][level3]
+waiting_hash = defaultdict(lambda: [defaultdict(lambda: [[] for _ in range(1000)]) for _ in range(1000)])
 judging_domain = set()
 domain_latest = defaultdict(lambda: (0,0))  # domain : (start, gap)
 
