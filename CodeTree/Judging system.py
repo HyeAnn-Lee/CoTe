@@ -5,17 +5,25 @@ from collections import defaultdict
 def url_to_domain_qid(url):
     return url.split('/')
 
+def qid_to_hashlevel(qid):
+    qid = int(qid)
+    quot, level1 = qid // 1000, qid % 1000
+    level3, level2 = quot // 1000, quot % 1000
+    return level1, level2, level3
+
 def add_to_wait(p, t, u):
     heapq.heappush(waiting_PQ, (p, t, u))
     domain, qid = url_to_domain_qid(u)
-    waiting_url[domain].append(qid)
+
+    l1, l2, l3 = qid_to_hashlevel(qid)
+    waiting_hash[domain][l1][l2].append(l3)
     return
 
 
 waiting_PQ = []     # (p, t, url)
 heapq.heapify(waiting_PQ)
 
-waiting_url = defaultdict(lambda: [])   # domain : [qids]
+waiting_hash = defaultdict(lambda: [[[] for _ in range(1000)] for _ in range(1000)])    # domain : [level1][level2][level3]
 judging_domain = set()
 domain_latest = defaultdict(lambda: (0,0))  # domain : (start, gap)
 
@@ -41,7 +49,9 @@ for _ in range(Q):
         t, p, u = int(command[1]), int(command[2]), command[3]
 
         domain, qid = url_to_domain_qid(u)
-        if qid in waiting_url[domain]:
+
+        l1, l2, l3 = qid_to_hashlevel(qid)
+        if l3 in waiting_hash[domain][l1][l2]:
             continue
         
         add_to_wait(p, t, u)
@@ -67,7 +77,9 @@ for _ in range(Q):
                 J_id = heapq.heappop(idle_judger)
                 judging_what[J_id-1] = (t, u_i)
                 judging_domain.add(domain_i)
-                waiting_url[domain_i].remove(qid_i)
+
+                l1, l2, l3 = qid_to_hashlevel(qid_i)
+                waiting_hash[domain_i][l1][l2].remove(l3)
                 break
                 
         for item in temp:
