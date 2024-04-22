@@ -1,19 +1,14 @@
+import string
+
+
 class Solution:
     def numberOfSpecialChars(self, word: str) -> int:
         
-        lowerbag, upperbag = set(), set()
-        diff = ord('a') - ord('A')
+        lower, upper = string.ascii_lowercase, string.ascii_uppercase
         count = 0
         
-        for letter in word:
-            temp = ord(letter)
-            if temp >= ord('a'):
-                lowerbag.add(temp)
-            else:
-                upperbag.add(temp)
-        
-        for upper in upperbag:
-            if upper + diff in lowerbag:
+        for i in range(26):
+            if upper[i] in word and lower[i] in word:
                 count += 1
             
         return count
